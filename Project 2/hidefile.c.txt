@@ -1,0 +1,35 @@
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+// Name: Jason Cariaga
+// netID: jmc803
+// RUID: 171001720
+// your code for readdir goes here
+#include <dirent.h>
+#include <dlfcn.h>
+#include <string.h>
+
+struct dirent *readdir(DIR *dirp){
+        struct dirent * (*new_readdir)(DIR *dirp); //works too!
+        new_readdir = dlsym(RTLD_NEXT, "readdir"); //it works!
+        struct dirent* temp = new_readdir(dirp);
+
+        if(!temp){
+                return temp;
+        }
+        if(strcmp(temp -> d_name, getenv("HIDDEN")) == 0 ){ //for if HIDDEN match does occur
+        //      printf("found me \n");
+                return new_readdir(dirp);
+        }
+        //else{ //if no match
+        //      printf("not match \n");
+                //return new_readdir(dirp); //returns the file
+        //}
+        //return dirp;
+        return temp;
+}
+
+
+
+

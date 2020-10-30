@@ -1,51 +1,56 @@
+#Jason Cariaga
+#second attmpt at vencrypt using different approach
 from sys import argv;
-#Author: Jason Cariaga
-#171001720
+def makeGrid():
+	grid = [];
+	size = 256
+	for i in range(size):
+		row = []
+		for j in range(size):
+			row.append((i+j) % (size))
+		#print(row)
+		grid.append(row)
+	return grid;
+
+#for reading the keyfile
+def read_file(filename):
+	with open(filename, "rb") as f:
+		data = f.read()
+		return data; #currData is binary data of keyfile
+
+#main method starts here
+grid = makeGrid()
 try:
+	keyfile = argv[1]
 	plainfile = argv[3];
 	cipherfile = argv[2];
-	keyfile = argv[1]
-	#keytxt = open(keyfile, "rb") 
-	# #plaintxt = open(plainfile, "rb")
+	key = read_file(keyfile)
+	#print(key)
 except:
-	print("please enter in values for keyfile, plaintext and ciphertext");
+	print("please enter in names for keyfile, plaintext and ciphertext");
 	exit();
-
-#reads all contents in bytes and places into an array
-bytekey = []
-bytetxt = []
-byteciph = []
-with open(keyfile, "rb") as keytxt: #keytxt = open(keyfile, "rb")
+#we instantiate grid here:
+#for plaintext and handling the rest of the file aka main 
+with open(plainfile, 'wb+') as plain_txt:
+	with open(cipherfile, 'rb') as cipher_txt:
 		while True:
-			byte = keytxt.read(1);
-			if not byte:
+			data = cipher_txt.read(2048*2048) #data comes from cipherfile
+			if not data:
 				break;
-			bytekey.append(byte);
+			print(data)
+			bytedata = bytearray(b'')
+			for i in range(len(data)):
+				value = data[i] 
+				print(value)
+				if not key:
+					bytedata.append(data[i])
+				else:
+					print(key[i % len(key)])
+					for x in range(256):
+						if(grid[x][key[i % len(key)]] == value):
+							bytedata.append(grid[x][key[i % len(key)]])
+							break;
+			plain_txt.write(bytedata)
 
-with open(plainfile, "rb") as plaintxt: #keytxt = open(keyfile, "rb")
-	while True:
-		byte = plaintxt.read(1);
-		if not byte:
-			break;
-		bytetxt.append(byte); 
-
-# with open(cipherfile, "rb") as ciphertxt: #keytxt = open(keyfile, "rb")
-# 	while True:
-# 		byte = ciphertxt.read(1);
-# 		if not byte:
-# 			break;
-# 		byteciph.append(byte);  
-ciphertxt = open(cipherfile, encoding="utf-8")
-byteciph = bytearray(ciphertxt.read(), 'utf-8')
-	#plaintxt = open(plainfile, "rb")
-
-#actually works and covers the case of a null key, and also makes sure to cover repeating keys too
-i = 0;
-while(len(bytekey) < len(bytetxt)):
-	if not bytekey:
-		bytekey.append('\0')
-	bytekey.append(bytekey[i])
-	i += 1;
-
-print(bytekey)
-print(byteciph)
+cipher_txt.close()
+plain_txt.close()

@@ -37,19 +37,20 @@ with open(plainfile, 'wb+') as plain_txt:
 			data = cipher_txt.read(2048*2048) #data comes from cipherfile
 			if not data:
 				break;
-			print(data)
+			#print(data)
 			bytedata = bytearray(b'')
 			for i in range(len(data)):
 				value = data[i] 
-				print(value)
+				#print(value)
 				if not key:
 					bytedata.append(data[i])
 				else:
 					print(key[i % len(key)])
 					for x in range(256):
 						if(grid[x][key[i % len(key)]] == value):
-							bytedata.append(grid[x][key[i % len(key)]])
+							bytedata.append(x)
 							break;
+			#print(bytedata)
 			plain_txt.write(bytedata)
 
 cipher_txt.close()

@@ -38,13 +38,10 @@ while(len(bytekey) < len(bytetxt)):
 	i += 1;
 
 #converts below to ascii number from 0-255
-
-#bytekey = bytearray(keytxt.read(), 'utf-8') #works for converting string to bytes
-#bytetxt = bytearray(plaintxt.read(), 'utf-8')
 print(bytetxt)
 print(bytekey)
 #result = []
-result = ''
+bytedata = bytearray(b'')
 #to handle encrypting the plaintext and returning the ciphertext
 #try:
 for item in range(len(bytekey)):

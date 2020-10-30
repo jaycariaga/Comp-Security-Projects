@@ -40,16 +40,14 @@ with open(plainfile, 'rb') as plain_txt:
 			#print(data) prints out b'...'
 			#print(key) prints out b'...'
 			bytedata = bytearray(b'')
-			print(data)
+			#print(data)
 			for i in range(len(data)):
 				rowbyte = data[i] #row represents the read plaintext, columns are the key reps
 				if not key:
 					bytedata.append(data[i])
 				else:
 					colbyte = key[i % len(key)]
-					print(colbyte)
 					bytedata.append(grid[rowbyte][colbyte])
-			print(bytedata)
 			cipher_txt.write(bytedata)
 
 cipher_txt.close()

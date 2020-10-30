@@ -1,12 +1,12 @@
 from sys import argv;
+
 #Author: Jason Cariaga
 #171001720
+
 try:
 	plainfile = argv[2];
 	cipherfile = argv[3];
 	keyfile = argv[1]
-	#keytxt = open(keyfile, "rb") 
-	# #plaintxt = open(plainfile, "rb")
 except:
 	print("please enter in values for keyfile, plaintext and ciphertext");
 	exit();
@@ -27,7 +27,6 @@ with open(plainfile, "rb") as plaintxt: #keytxt = open(keyfile, "rb")
 		if not byte:
 			break;
 		bytetxt.append(byte);  
-	#plaintxt = open(plainfile, "rb")
 
 #actually works and covers the case of a null key, and also makes sure to cover repeating keys too
 i = 0;
@@ -41,23 +40,13 @@ while(len(bytekey) < len(bytetxt)):
 print(bytetxt)
 print(bytekey)
 #result = []
-bytedata = bytearray(b'')
+result = bytearray(b'')
 #to handle encrypting the plaintext and returning the ciphertext
-#try:
-for item in range(len(bytekey)):
+for item in range(len(bytetxt)):
 	print(bytetxt[item])
 	print(bytekey[item])
-	#print(chr(ord(bytetxt[item]))) #sample of something that decodes an encoded int of a byte character
-	temp = (ord(bytetxt[item]) + ord(bytekey[item])) % 256
-	#result.append(temp)
-	#result += hex(temp)
-	print(chr(temp))
-	result += chr(temp)
-	#hexval = hex(temp)
-	#result.append(hexval)
-# except:
-# 	print("please have the correct length between keyfile and plaintext");
-# 	exit();
+	temp = (ord(bytetxt[item]) + ord(bytekey[item % len(bytekey)])) % 256
+	result.append(temp)
 
 with open(cipherfile, "wb+") as output:
 	#ciphertxt.write(''.join(result))
@@ -67,5 +56,3 @@ with open(cipherfile, "wb+") as output:
 
 output.close()
 keytxt.close()
-
-

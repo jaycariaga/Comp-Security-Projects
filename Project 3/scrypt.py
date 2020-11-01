@@ -1,42 +1,67 @@
 from sys import argv;
 #Jason Cariaga
 #171001720
-#for reading the keyfile
+#done using Python 3.8
+
+#for reading the file in bytes
 def read_file(filename):
 	with open(filename, "rb") as f:
 		data = f.read()
 		return data; #currData is binary data of keyfile
 
+#the S = seed used for ciphertext...WORKS!
 def sdbm(input):
 	hash = 0;
 	for val in input:
-		c = input[val]
+		c = ord(val)
 		hash = c + (hash * (2**6)) + (hash*(2**16)) - hash;
 	return hash;
 
-#sample input
-x = [0, 1, 2, 3]
-#returns bytearray of a series of bytes
-mybyte = bytearray(b'')
-for val in x:
-	a = 1103515245
-	m = 256
-	c = 12345
-	if not x:
-		break;
-	elif val == 0:
-		mybyte.append(x[val])
-		continue;
-	mybyte.append((a*x[val-1] + c) % m);
-
-print(mybyte)
-
+#main method starts here
 try:
 	password = argv[1]
 	plainfile = argv[2];
 	cipherfile = argv[3];
-	key = read_file(keyfile)
 	#print(key)
 except:
-	print("please enter in names for password, plaintext, ");
+	print("please enter in names for password, plaintext, ciphertext");
 	exit();
+
+with open(plainfile, 'rb') as plain_txt:
+	with open(cipherfile, 'wb') as ciph_txt:
+		while True:
+			data = plain_txt.read(2048*2048) #comes from plaintext file
+			if not data:
+				break;
+			#generating seed - works
+			seed = sdbm(password)
+			print(data)
+			#sample input
+			#x = "0123"
+
+			#returns linear congruential generator
+			mybyte = bytearray(b'')
+			congru = seed;
+			for val in range(len(data)):
+				a = 1103515245
+				m = 256
+				c = 12345
+				if not data:
+					break;
+				elif val == 0: #for first case
+					result = data[val] ^ ((a*seed+c)%m)
+					mybyte.append(result)
+					continue;
+				congru = (a * congru + c) % m
+				#congru works, doing xor now
+				result = data[val] ^ congru
+				print(result)
+				mybyte.append(result);
+
+			#writing time my brothers
+			ciph_txt.write(mybyte)
+			print(mybyte)
+
+plain_txt.close()
+ciph_txt.close()
+

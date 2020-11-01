@@ -1,5 +1,7 @@
 #Jason Cariaga
-#second attmpt at vencrypt using different approach
+#171001720
+#done using Python 3.8
+#attmpt at vencrypt pt 1
 from sys import argv;
 def makeGrid():
 	grid = [];

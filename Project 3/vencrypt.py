@@ -21,7 +21,7 @@ def read_file(filename):
 		data = f.read()
 		return data; #currData is binary data of keyfile
 
-if sys.version_info[0] < 3:
+if sys.version_info < (3, 6) :
     print("This script requires Python version 3.8 or higher")
     sys.exit(1)
 

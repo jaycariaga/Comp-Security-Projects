@@ -1,4 +1,5 @@
 from sys import argv;
+import sys;
 #Jason Cariaga
 #171001720
 #done using Python 3.8
@@ -16,6 +17,12 @@ def sdbm(input):
 		c = ord(val)
 		hash = c + (hash * (2**6)) + (hash*(2**16)) - hash;
 	return hash;
+
+
+if sys.version_info < (3, 6) :
+    print("This script requires Python version 3.8 or higher")
+    sys.exit(1)
+
 
 #main method starts here
 try:

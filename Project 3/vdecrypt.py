@@ -3,6 +3,7 @@
 #done using Python 3.8
 #attmpt at vencrypt
 from sys import argv;
+import sys;
 def makeGrid():
 	grid = [];
 	size = 256
@@ -19,6 +20,11 @@ def read_file(filename):
 	with open(filename, "rb") as f:
 		data = f.read()
 		return data; #currData is binary data of keyfile
+
+if sys.version_info < (3, 6) :
+    print("This script requires Python version 3.8 or higher")
+    sys.exit(1)
+
 
 #main method starts here
 grid = makeGrid()

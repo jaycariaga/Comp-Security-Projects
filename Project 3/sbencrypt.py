@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #Jason Cariaga
 #171001720
 #done using Python 3.8

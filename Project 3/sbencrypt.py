@@ -26,7 +26,7 @@ def sdbm(input):
 	return hash;
 
 if sys.version_info < (3, 6) :
-    print("This script requires Python version 3.8 or higher")
+    print("This script requires Python version 3.6 or higher")
     sys.exit(1)
 
 #main method starts here

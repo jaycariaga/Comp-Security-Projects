@@ -43,7 +43,7 @@ except:
 with open(plainfile, 'wb+') as plain_txt:
 	with open(cipherfile, 'rb') as cipher_txt:
 		while True:
-			data = cipher_txt.read(2048*2048) #data comes from cipherfile
+			data = cipher_txt.read(1024) #data comes from cipherfile
 			if not data:
 				break;
 			#print(data)

@@ -38,12 +38,12 @@ except:
 with open(plainfile, 'rb') as plain_txt:
 	with open(cipherfile, 'wb') as ciph_txt:
 		while True:
-			data = plain_txt.read(2048*2048) #comes from plaintext file
+			data = plain_txt.read(1024) #comes from plaintext file
 			if not data:
 				break;
 			#generating seed - works
 			seed = sdbm(password)
-			print(data)
+			#print(data)
 			#sample input
 			#x = "0123"
 
@@ -63,12 +63,12 @@ with open(plainfile, 'rb') as plain_txt:
 				congru = (a * congru + c) % m
 				#congru works, doing xor now
 				result = data[val] ^ congru
-				print(result)
+				#print(result)
 				mybyte.append(result);
 
 			#writing time my brothers
 			ciph_txt.write(mybyte)
-			print(mybyte)
+			#print(mybyte)
 
 plain_txt.close()
 ciph_txt.close()

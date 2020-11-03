@@ -42,7 +42,7 @@ except:
 with open(plainfile, 'rb') as plain_txt:
 	with open(cipherfile, 'wb+') as cipher_txt:
 		while True:
-			data = plain_txt.read(2048*2048) #comes from plaintext file
+			data = plain_txt.read(1024) #comes from plaintext file
 			if not data:
 				break;
 			#print(data) prints out b'...'
@@ -55,8 +55,8 @@ with open(plainfile, 'rb') as plain_txt:
 					bytedata.append(data[i])
 				else:
 					colbyte = key[i % len(key)]
-					print(colbyte)
-					print(rowbyte)
+					#print(colbyte)
+					#print(rowbyte)
 					bytedata.append(grid[rowbyte][colbyte])
 			cipher_txt.write(bytedata)
 

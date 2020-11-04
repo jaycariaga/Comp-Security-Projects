@@ -54,7 +54,7 @@ with open(plainfile, 'wb+') as plain_txt:
 				if not key:
 					bytedata.append(data[i])
 				else:
-					print(key[i % len(key)])
+					#print(key[i % len(key)])
 					for x in range(256):
 						if(grid[x][key[i % len(key)]] == value):
 							bytedata.append(x)

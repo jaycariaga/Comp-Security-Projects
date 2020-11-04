@@ -34,33 +34,33 @@ try:
 except:
 	print("please enter in names for password, plaintext, ciphertext");
 	exit();
-
+#generating seed - works
+seed = sdbm(password)
+congru = seed;
 with open(plainfile, 'rb') as plain_txt:
 	with open(cipherfile, 'wb') as ciph_txt:
 		while True:
 			data = plain_txt.read(1024) #comes from plaintext file
 			if not data:
 				break;
-			#generating seed - works
-			seed = sdbm(password)
-			#print(data)
-			#sample input
-			#x = "0123"
+			# #generating seed - works
+			# seed = sdbm(password)
 
 			#returns linear congruential generator
 			mybyte = bytearray(b'')
-			congru = seed;
+			# congru = seed;
 			for val in range(len(data)):
 				a = 1103515245
 				m = 256
 				c = 12345
 				if not data:
 					break;
-				elif val == 0: #for first case
-					result = data[val] ^ ((a*seed+c)%m)
-					mybyte.append(result)
-					continue;
+				# elif val == 0: #for first case
+				# 	result = data[val] ^ ((a*seed+c)%m)
+				# 	mybyte.append(result)
+				# 	continue;
 				congru = (a * congru + c) % m
+				#print(congru)
 				#congru works, doing xor now
 				result = data[val] ^ congru
 				#print(result)

@@ -25,28 +25,26 @@ def sdbm(input):
 		hash = c + (hash * (2**6)) + (hash*(2**16)) - hash;
 	return hash;
 
-def pad(msg, size): 
-      
-    # Calculate the missing number of  
-    # bytes, say N 
+def pad(msg, size):
+    #finds remaining bytes to pad onto
     if not msg:
     	padsize = 16
     else:
     	padsize = (size - len(msg)) % size
     print(padsize)
-    # Pad with character of N 
     newtxt = msg + chr(padsize).encode() * padsize 
-      
     return newtxt
+
+def swap(block1, block2):
+	print("swapping n")
+
+
+	return newblock;
+
 
 if sys.version_info < (3, 6) :
     print("This script requires Python version 3.6 or higher")
     sys.exit(1)
-
-#default padding..?
-# hexadecimal_string = "06" 
-# gotem = bytearray.fromhex(hexadecimal_string)
-
 
 #main method starts here
 try:
@@ -57,12 +55,14 @@ try:
 except:
 	print("please enter in names for password, plaintext, ciphertext");
 	exit();
+
+#temp variables instantiated here
 prev = None;
 kill = 0;
-if prev:
-	print("all rigt")
-else:
-	print("skert")
+
+#generating seed - works
+seed = sdbm(password)
+
 with open(plainfile, 'rb') as plain_txt:
 	with open(cipherfile, 'wb') as ciph_txt:
 		while True:
@@ -78,30 +78,38 @@ with open(plainfile, 'rb') as plain_txt:
 				data = pad(data, 16)
 				kill = 1; #for when padding done on some space
 
-			prev = data; #creatingtemp variable repr previous data pt
+			#creatingtemp variable repr previous block and without padding
+			prev = data; 
+
+			#below handles padding for blocks less than 16 bytes
 			if data:			
 				data = pad(data, 16)
-			#generating seed - works
-			seed = sdbm(password)
+
+			# #generating seed - works
+			# seed = sdbm(password)
 			print(data)
 
-			#returns linear congruential generator
-			mybyte = bytearray(b'')
+			#setting IV(initialization vector) aka the first 16 bytes of keystream generator - works as far as i know
 			congru = seed;
-			for val in range(len(data)):
+			key = bytearray(b'')
+			for i in range(len(data)):
+				congru = (1103515245 * congru + 12345) % 256
+				print(congru)
+				key.append(congru)
+			print(key)
+
+			#mybyte is the final ciphertext to append to output file
+			mybyte = bytearray(b'')
+			for val in range(len(data)): #remember data is limited to 16 byte blocks here!!!
 				a = 1103515245
 				m = 256
 				c = 12345
-				if not data:
+				if not data: #in case plaintext be empty
 					break;
-				elif val == 0: #for first case
-					result = data[val] ^ ((a*seed+c)%m)
-					mybyte.append(result)
-					continue;
-				congru = (a * congru + c) % m
-				#congru works, doing xor now
+
+				temp_blk = data[val] ^ key[val]
+
 				result = data[val] ^ congru
-				print(result)
 				mybyte.append(result);
 
 			#writing time my brothers

@@ -84,10 +84,6 @@ with open(plainfile, 'rb') as plain_txt:
 			if data:			
 				data = pad(data, 16)
 
-			# #generating seed - works
-			# seed = sdbm(password)
-			#print(data)
-
 			#setting IV(initialization vector) aka the first 16 bytes of keystream generator - works as far as i know
 			congru = seed;
 
@@ -110,22 +106,19 @@ with open(plainfile, 'rb') as plain_txt:
 				temp_blk = data[val] ^ initv[val]
 				mybyte.append(temp_blk);
 			#swapping keystream bytes for xor
-			print(mybyte)
+			#print(mybyte)
 			for i in range(16):
 				first = key[i] & 0xf
 				second = (key[i] >> 4) & 0xf
 				mybyte = swap(mybyte, first, second)
 
-			#key = swap(key)
-			
+			#print(mybyte)
 			for i in range(16):
 				final.append( mybyte[i] ^ key[i] );
 
 			initv = final
 			#writing time my brothers
 			ciph_txt.write(final)
-			#print(mybyte)
-			#print(final)
 
 			#kills loop when padding done on some of msg
 			if kill:

@@ -20,15 +20,15 @@ def sdbm(input):
 		hash = c + (hash * (2**6)) + (hash*(2**16)) - hash;
 	return hash;
 
-def pad(msg, size):
+def unpad(msg):
     #finds remaining bytes to pad onto
-    if not msg:
-    	padsize = 16
-    else:
-    	padsize = (size - len(msg)) % size
-    #print(padsize)
-    newtxt = msg + chr(padsize).encode() * padsize 
-    return newtxt
+    loc = msg[-1];
+    for i in range(16):
+    	if msg[16-i-1] == loc:
+    		del msg[16-i-1]
+    	else:
+    		break;
+    return msg
 
 def swap(result, first, second):
 	#print(result)
@@ -70,6 +70,12 @@ for i in range(16):
 	key.append(congru)
 key = key[0:16]
 
+first = []
+second = []
+
+for i in range(16):
+	first.append(key[i] & 0xf)
+	second.append((key[i] >> 4) & 0xf)
 #starting to read cipherfile and plaintext for writing below
 with open(cipherfile, 'rb') as ciph_txt:
 	with open(plainfile, 'wb') as plain_txt:
@@ -82,7 +88,7 @@ with open(cipherfile, 'rb') as ciph_txt:
 
 		#i will be xoring the keystream key and the read 16 byte data and insert to the temporary cipher_tot
 		for i in range(len(cipher_tot)): #browses a block a time
-			current = cipher_tot[-i-1]
+			current = cipher_tot[len(cipher_tot)-i-1]
 			#print(current)
 			count = 0
 			temp = bytearray(b'')
@@ -94,11 +100,11 @@ with open(cipherfile, 'rb') as ciph_txt:
 
 			#this should be the keystream swap going back in
 			for k in range(16):
-				first = key[k] & 0xf
-				second = (key[k] >> 4) & 0xf
-				current = swap(current, first, second)
-			print(-i-1)
-			cipher_tot[-i-1] = current
+				current = swap(current, first[16-1-k], second[16-1-k])
+
+			#cipher_tot[len(cipher_tot)-i-1] = current
+
+			#if block carries for [0] case: final xor with keystream; else current xor previous cipherblock
 			if(i == len(cipher_tot) - 1):
 				for k in range(16):
 					current[k] = current[k] ^ key[k]
@@ -106,18 +112,16 @@ with open(cipherfile, 'rb') as ciph_txt:
 				break;
 			else:
 				for k in range(16):
-					current[k] = current[k] ^ cipher_tot[-i-2][k]
+					current[k] = current[k] ^ cipher_tot[len(cipher_tot)-i-2][k]
+				cipher_tot[len(cipher_tot)-1-i] = current
+				if i == 0:
+					cipher_tot[len(cipher_tot)-1] = unpad(cipher_tot[len(cipher_tot)-1])
 
+		print(cipher_tot)
 		for val in cipher_tot:
 			plain_txt.write(val)
 
 
-		#print(cipher_tot)
-
-		#this for loop will cover handling blocks from end to start by decrementation
-		# for i in range(len(cipher_tot)):
-		# 	cipher_tot[i] = cipher_tot[i][0:16] ^ key[0:16]
-			#print(cipher_tot[-i]) #how to access in reverse form
 
 plain_txt.close()
 ciph_txt.close()

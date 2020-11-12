@@ -9,11 +9,14 @@ import random
 import string
 
 
-def checkme(firsthash, sechash):
+def checkme(sechash, nbits):
 	
-
-
-
+	res = ''.join(format(ord(i), 'b') for i in sechash) 
+	print(res)
+	for x in range(nbits):
+		if not(str(res[x]) == '0'):
+			#print(res[x])
+			return False;
 	return True;
 
 
@@ -23,7 +26,6 @@ def prefixgen():
 	allchars = allchars.replace('"', '')
 	allchars = allchars.replace("'", '')
 	allchars = allchars.replace(' ', '')
-	print(allchars)
 	result = ''.join(random.choice(allchars) for x in range(length))
 	return result
 
@@ -34,7 +36,7 @@ try:
 	difficulty = int(argv[1])
 	message = argv[2]
 except: 
-	print("Please fill in all arguments: [bits] [output]")
+	print("Please fill in all arguments: [difficulty] [messagefile]")
 	exit()
 if difficulty < 0:
 	print("Please have difficulty above 0:")
@@ -44,7 +46,6 @@ with open(message, "rb") as msg:
 	print ("File: {}".format(message))
 	while True:
 		data = msg.read()
-		print(data)
 		if not data:
 			break
 		#what happens after reading entire file in binary
@@ -57,17 +58,14 @@ with open(message, "rb") as msg:
 		while True:
 			result = prefixgen().encode('ascii') #rand string converted to binary
 			tryme = result + data
-
 			sechash = hashlib.sha256()
 			sechash.update(tryme)
 			seccomp = sechash.hexdigest()
-
-			if not checkme(computed, seccomp): #when leading zeros is no success repeat again
-				continue;
-
-			print("sechash is: {}".format(seccomp))
-			print("computed is: {}".format(computed))
-			break;
+			print(seccomp)
+			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
+				print("sechash is: {}".format(seccomp))
+				print("computed is: {}".format(computed))
+				break;
 
 		# res = computed.rjust(difficulty + len(computed), '0') 
 		# print(res)

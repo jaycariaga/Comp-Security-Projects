@@ -10,13 +10,12 @@ import string
 
 
 def checkme(sechash, nbits):
-	
 	res = ''.join(format(ord(i), 'b') for i in sechash) 
 	print(res)
 	for x in range(nbits):
 		if not(str(res[x]) == '0'):
-			#print(res[x])
-			return False;
+			print(res[x])
+			#return True;
 	return True;
 
 

@@ -13,24 +13,41 @@ import time
 def sha256(data):
 	#remember that data in update must be binary
 	first = hashlib.sha256()
-	first.update(data.encode()) #places data in hash function
+	first.update(data) #places data in hash function
 	computed = first.hexdigest()
-	print(computed)
+	#print(computed)
 	return computed
 
+def getBin (hash):
+	binar = bin(int('1'+hash, 16))[3:]
+	return binar
+
+def findleadbits(sechash):
+	binres = getBin(sechash)
+	result = 0
+	#print(binres)
+	for x in range(len(binres)):
+		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
+			break;
+		result += 1
+	#print(result)
+	return result;
 
 try:
 	powheader = argv[1]
-	file = argv[2]
+	msgfile = argv[2]
 except:
 	print("please include arguments: [pow-header, original message file]")
 	exit()
 
 #storing header data into variables now:
+failtest = []
+passed = 1
 file = ''
 inithash = ''
 proofwork = ''
 nbits = 0
+finalhash = ''
 
 with open(powheader, 'r') as pow:
 	header = pow.readlines()
@@ -40,7 +57,24 @@ with open(powheader, 'r') as pow:
 	file = (header[0].split())[1]
 	inithash = (header[1].split())[1]
 	proofwork = (header[2].split())[1]
+	finalhash = (header[3].split())[1]
 	nbits = (header[4].split())[1]
-	data = proofwork + inithash
-	print(data)
-	sha256(data)
+	#covers first case
+	with open(msgfile, 'rb') as msg:
+		message = msg.read()
+		secmsg = sha256(message)
+		if not (secmsg == inithash):
+			failtest.append("Test Failed: Message file does NOT hash to the correct value!")
+
+	#checks second case of proof of work
+	data = proofwork + secmsg
+	hashdata = sha256(data.encode())
+	if not (hashdata == finalhash):
+		failtest.append("Test Failed: Proof of work with file hash string does not match final Hash!")
+	if not (findleadbits(hashdata) == int(nbits)):
+		failtest.append("Test Failed: Leading-bits number does NOT match header's")
+
+	if not failtest:
+		print("pass")
+	else:
+		print('\n'.join(failtest))

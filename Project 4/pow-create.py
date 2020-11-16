@@ -34,7 +34,8 @@ def checkme(seccomp, checking):
 def findleadbits(sechash):
 	binres = getBin(sechash)
 	result = 0
-	for x in range(len(sechash)):
+	print(binres)
+	for x in range(len(binres)):
 		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
 			break;
 		result += 1
@@ -97,10 +98,7 @@ with open(message, "rb") as msg:
 			sechash.update(tryme.encode())
 			seccomp = sechash.hexdigest()
 			count+=1
-			#print(seccomp)
-			# if count == limit:
-			# 	print("Amount of times eloted")
-			# 	exit()
+
 			if checkme(seccomp, checking): #if checkme is true, finishes while loop
 				timeend = time.time() - start
 				proofwork = result.decode()

@@ -27,8 +27,8 @@ def findleadbits(sechash):
 	binres = getBin(sechash)
 	result = 0
 	for x in range(len(sechash)):
-		result += 1
 		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
+			result += 1
 			break;
 	return result;
 

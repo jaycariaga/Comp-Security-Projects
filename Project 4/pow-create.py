@@ -12,24 +12,32 @@ import time
 def getBin (hash):
 	binar = bin(int('1'+hash, 16))[3:]
 	return binar
-def checkme(sechash, nbits):
-	#res = str("{0:08b}".format(int(sechash, 16)) )
-	res = getBin(sechash)
-	#print(res)
-	for x in range(nbits):
-		#print(res[2+x])
-		if not(str(res[x]) == '0'): #add +1 in [x] for righter bits
-			#print(res[2 + x])
-			return False;
-	return True;
+# def checkme(sechash, nbits):
+# 	#res = str("{0:08b}".format(int(sechash, 16)) )
+# 	res = getBin(sechash)
+# 	print(res)
+# 	for x in range(nbits):
+# 		#print(res[2+x])
+# 		if not(str(res[x]) == '0'): #add +1 in [x] for righter bits
+# 			#print(res[2 + x])
+# 			return False;
+# 	return True;
+
+def checkme(seccomp, checking):
+	hashint = int(seccomp, 16)
+	#checking = pow(2, 256-nbits)
+	if(hashint < checking):
+		return True;
+	else:
+		return False;
 
 def findleadbits(sechash):
 	binres = getBin(sechash)
 	result = 0
 	for x in range(len(sechash)):
 		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
-			result += 1
 			break;
+		result += 1
 	return result;
 
 #im just gonna leave the character set as globals for sake of O(n)
@@ -77,6 +85,7 @@ with open(message, "rb") as msg:
 		computed = first.hexdigest() #converts message to hash 
 		#all works above
 		print("Initial-hash: {}".format(computed))
+		checking = pow(2, 256-difficulty)
 		#start counting time NOW
 		start = float(time.time())
 		while count < limit:
@@ -92,7 +101,7 @@ with open(message, "rb") as msg:
 			# if count == limit:
 			# 	print("Amount of times eloted")
 			# 	exit()
-			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
+			if checkme(seccomp, checking): #if checkme is true, finishes while loop
 				timeend = time.time() - start
 				proofwork = result.decode()
 				print("Proof-of-work: {}".format(proofwork))

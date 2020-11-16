@@ -79,7 +79,7 @@ with open(message, "rb") as msg:
 		print("Initial-hash: {}".format(computed))
 		#start counting time NOW
 		start = float(time.time())
-		while True:
+		while count < limit:
 			result = prefixgen(newlen).encode('ascii') #rand string converted to binary
 			#tryme = result + data
 			tryme = result.decode() + computed
@@ -89,9 +89,9 @@ with open(message, "rb") as msg:
 			seccomp = sechash.hexdigest()
 			count+=1
 			#print(seccomp)
-			if count == limit:
-				print("Amount of times eloted")
-				exit()
+			# if count == limit:
+			# 	print("Amount of times eloted")
+			# 	exit()
 			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
 				timeend = time.time() - start
 				proofwork = result.decode()
@@ -101,5 +101,6 @@ with open(message, "rb") as msg:
 				print("Leading-bits: {}".format(findleadbits(seccomp)))
 				print("Iterations: {}".format(count))
 				print("Compute-time: {}".format(timeend))
-				break;
+				exit();
+print("Too many iterations! Stopping execution now.")
 

@@ -7,18 +7,30 @@ import sys;
 import hashlib
 import random
 import string
+import time
 
-
+def getBin (hash):
+	binar = bin(int('1'+hash, 16))[3:]
+	return binar
 def checkme(sechash, nbits):
-	#res = ''.join(format(ord(i), 'b') for i in sechash)
-	res = str("{0:08b}".format(int(sechash, 16)) )
+	#res = str("{0:08b}".format(int(sechash, 16)) )
+	res = getBin(sechash)
 	#print(res)
 	for x in range(nbits):
 		#print(res[2+x])
-		if not(str(res[x+1]) == '0'):
+		if not(str(res[x]) == '0'): #add +1 in [x] for righter bits
 			#print(res[2 + x])
 			return False;
 	return True;
+
+def findleadbits(sechash):
+	binres = getBin(sechash)
+	result = 0
+	for x in range(len(sechash)):
+		result += 1
+		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
+			break;
+	return result;
 
 
 def prefixgen():
@@ -28,6 +40,7 @@ def prefixgen():
 	allchars = allchars.replace("'", '')
 	allchars = allchars.replace(' ', '')
 	result = ''.join(random.choice(allchars) for x in range(length))
+	#print(result)
 	return result
 
 
@@ -55,12 +68,15 @@ with open(message, "rb") as msg:
 		computed = first.hexdigest() #converts message to hash 
 		#all works above
 		print("Initial-hash: {}".format(computed))
-
+		#start counting time NOW
+		start = float(time.time())
 		while True:
 			result = prefixgen().encode('ascii') #rand string converted to binary
-			tryme = result + data
+			#tryme = result + data
+			tryme = result.decode() + computed
+			#print(tryme)
 			sechash = hashlib.sha256()
-			sechash.update(tryme)
+			sechash.update(tryme.encode())
 			seccomp = sechash.hexdigest()
 			count+=1
 			#print(seccomp)
@@ -68,9 +84,14 @@ with open(message, "rb") as msg:
 				print("Amount of times eloted")
 				exit()
 			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
-				print("sechash is: {}".format(seccomp))
-				print("computed is: {}".format(computed))
-				print("iterations is: {}".format(count))
+				timeend = time.time() - start
+				proofwork = result.decode()
+				print("Proof-of-work: {}".format(proofwork))
+				#final hash
+				print("Hash: {}".format(seccomp))
+				print("Leading-bits: {}".format(findleadbits(seccomp)))
+				print("Iterations: {}".format(count))
+				print("Compute-time: {}".format(timeend))
 				break;
 
 		# res = computed.rjust(difficulty + len(computed), '0') 

@@ -10,12 +10,14 @@ import string
 
 
 def checkme(sechash, nbits):
-	res = ''.join(format(ord(i), 'b') for i in sechash) 
-	print(res)
+	#res = ''.join(format(ord(i), 'b') for i in sechash)
+	res = str("{0:08b}".format(int(sechash, 16)) )
+	#print(res)
 	for x in range(nbits):
-		if not(str(res[x]) == '0'):
-			print(res[x])
-			#return True;
+		#print(res[2+x])
+		if not(str(res[x+1]) == '0'):
+			#print(res[2 + x])
+			return False;
 	return True;
 
 
@@ -30,7 +32,7 @@ def prefixgen():
 
 
 limit = 10000000000 #amount of iterations before cutoff saying too much time
-current = 0
+count = 0
 try:
 	difficulty = int(argv[1])
 	message = argv[2]
@@ -60,10 +62,15 @@ with open(message, "rb") as msg:
 			sechash = hashlib.sha256()
 			sechash.update(tryme)
 			seccomp = sechash.hexdigest()
-			print(seccomp)
+			count+=1
+			#print(seccomp)
+			if count == limit:
+				print("Amount of times eloted")
+				exit()
 			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
 				print("sechash is: {}".format(seccomp))
 				print("computed is: {}".format(computed))
+				print("iterations is: {}".format(count))
 				break;
 
 		# res = computed.rjust(difficulty + len(computed), '0') 

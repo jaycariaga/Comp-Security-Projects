@@ -37,8 +37,8 @@ allchars = string.digits + string.ascii_letters + string.punctuation
 allchars = allchars.replace('"', '')
 allchars = allchars.replace("'", '')
 allchars = allchars.replace(' ', '')
-def prefixgen():
-	length = random.randint(1,7)
+def prefixgen(newlen):
+	length = random.randint(newlen,8)
 	result = ''.join(random.choice(allchars) for x in range(length))
 	#print(result)
 	return result
@@ -46,6 +46,7 @@ def prefixgen():
 
 limit = 10000000000 #amount of iterations before cutoff saying too much time
 count = 0
+newlen = 2
 try:
 	difficulty = int(argv[1])
 	message = argv[2]
@@ -55,6 +56,14 @@ except:
 if difficulty < 0:
 	print("Please have difficulty above 0:")
 	exit();
+elif difficulty > 30:
+	newlen = 6
+elif difficulty > 25:
+	newlen = 5
+elif difficulty < 18:
+	newlen = 4
+elif difficulty > 17:
+	newlen = 3
 
 with open(message, "rb") as msg:
 	print ("File: {}".format(message))
@@ -71,7 +80,7 @@ with open(message, "rb") as msg:
 		#start counting time NOW
 		start = float(time.time())
 		while True:
-			result = prefixgen().encode('ascii') #rand string converted to binary
+			result = prefixgen(newlen).encode('ascii') #rand string converted to binary
 			#tryme = result + data
 			tryme = result.decode() + computed
 			#print(tryme)
@@ -93,7 +102,4 @@ with open(message, "rb") as msg:
 				print("Iterations: {}".format(count))
 				print("Compute-time: {}".format(timeend))
 				break;
-
-		# res = computed.rjust(difficulty + len(computed), '0') 
-		# print(res)
 

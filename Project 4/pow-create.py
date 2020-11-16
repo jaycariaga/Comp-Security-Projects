@@ -32,13 +32,13 @@ def findleadbits(sechash):
 			break;
 	return result;
 
-
+#im just gonna leave the character set as globals for sake of O(n)
+allchars = string.digits + string.ascii_letters + string.punctuation
+allchars = allchars.replace('"', '')
+allchars = allchars.replace("'", '')
+allchars = allchars.replace(' ', '')
 def prefixgen():
 	length = random.randint(1,7)
-	allchars = string.digits + string.ascii_letters + string.punctuation
-	allchars = allchars.replace('"', '')
-	allchars = allchars.replace("'", '')
-	allchars = allchars.replace(' ', '')
 	result = ''.join(random.choice(allchars) for x in range(length))
 	#print(result)
 	return result

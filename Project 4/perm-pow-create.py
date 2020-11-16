@@ -37,8 +37,8 @@ allchars = string.digits + string.ascii_letters + string.punctuation
 allchars = allchars.replace('"', '')
 allchars = allchars.replace("'", '')
 allchars = allchars.replace(' ', '')
-def prefixgen(length):
-	#length = random.randint(1,7)
+def prefixgen():
+	length = random.randint(1,7)
 	#permut = permutations(allchars)
 	result = ''.join(random.choice(allchars) for x in range(length))
 	#print(result)
@@ -47,7 +47,7 @@ def prefixgen(length):
 
 limit = 1000000000 #amount of iterations before cutoff saying too much time
 modulus = int(limit/10)
-newlen = 2
+#newlen = 2
 count = 0
 try:
 	difficulty = int(argv[1])
@@ -74,7 +74,7 @@ with open(message, "rb") as msg:
 		#start counting time NOW
 		start = float(time.time())
 		while True:
-			result = prefixgen(newlen).encode('ascii') #rand string converted to binary
+			result = prefixgen().encode('ascii') #rand string converted to binary
 			#tryme = result + data
 			tryme = result.decode() + computed
 			#print(tryme)
@@ -86,8 +86,8 @@ with open(message, "rb") as msg:
 			if count == limit:
 				print("Amount of times eloted")
 				exit()
-			elif count%modulus == 0:
-				newlen += 1;
+			# elif count%modulus == 0:
+			# 	newlen += 1;
 			if checkme(seccomp, difficulty): #if checkme is true, finishes while loop
 				timeend = time.time() - start
 				proofwork = result.decode()

@@ -85,7 +85,6 @@ with open(message, "rb") as msg:
 		first = hashlib.sha256()
 		first.update(data) #places data in hash function
 		computed = first.hexdigest() #converts message to hash 
-		#all works above
 		print("Initial-hash: {}".format(computed))
 		checking = pow(2, 256-difficulty)
 		#start counting time NOW
@@ -110,5 +109,6 @@ with open(message, "rb") as msg:
 				print("Iterations: {}".format(count))
 				print("Compute-time: {}".format(timeend))
 				exit();
-print("Too many iterations! Stopping execution now.")
+		print("Too many iterations! Stopping execution now.")
+		exit()
 

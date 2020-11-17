@@ -22,7 +22,7 @@ def getBin (hash):
 # 			#print(res[2 + x])
 # 			return False;
 # 	return True;
-
+#validity check done via math instead of for loop for better O(n)
 def checkme(seccomp, checking):
 	hashint = int(seccomp, 16)
 	#checking = pow(2, 256-nbits)
@@ -34,7 +34,7 @@ def checkme(seccomp, checking):
 def findleadbits(sechash):
 	binres = getBin(sechash)
 	result = 0
-	print(binres)
+	#print(binres)
 	for x in range(len(binres)):
 		if not(str(binres[x]) == '0'): #add +1 in [x] for righter bits
 			break;
@@ -69,7 +69,7 @@ elif difficulty > 30:
 	newlen = 6
 elif difficulty > 25:
 	newlen = 5
-elif difficulty < 18:
+elif difficulty > 18:
 	newlen = 4
 elif difficulty > 17:
 	newlen = 3
@@ -79,6 +79,7 @@ with open(message, "rb") as msg:
 	while True:
 		data = msg.read()
 		if not data:
+			print("please enter a file with content!")
 			break
 		#what happens after reading entire file in binary
 		first = hashlib.sha256()

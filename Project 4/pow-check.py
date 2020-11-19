@@ -54,11 +54,26 @@ with open(powheader, 'r') as pow:
 	#gets rid of \n
 	for line in range(len(header)):
 		header[line] = header[line].replace("\n", "")
-	file = (header[0].split())[1]
-	inithash = (header[1].split())[1]
-	proofwork = (header[2].split())[1]
-	finalhash = (header[3].split())[1]
-	nbits = (header[4].split())[1]
+	for part in header:
+		if not part:
+			continue
+		print(part)
+		arrch = part.split()
+		check = arrch[0]
+		if "file" in check.lower():
+			file = arrch[1]
+		if "initial-hash:" in check.lower():
+			inithash = arrch[1]
+		if "proof-of-work:" in check.lower():
+			proofwork = arrch[1]
+		if "hash:" in check.lower():
+			finalhash = arrch[1]
+		if "leading-bits" in check.lower():
+			nbits = arrch[1]
+	# print(file)
+	# print(inithash)
+	# print(proofwork)
+	# print(nbits)
 	#covers first case
 	with open(msgfile, 'rb') as msg:
 		message = msg.read()
@@ -70,7 +85,7 @@ with open(powheader, 'r') as pow:
 	data = proofwork + secmsg
 	hashdata = sha256(data.encode())
 	if not (hashdata == finalhash):
-		failtest.append("Test Failed: Proof of work with file hash string does not match final Hash!")
+		failtest.append("Test Failed: Final Hash of proof of work and file hash string does not match!")
 	if not (findleadbits(hashdata) == int(nbits)):
 		failtest.append("Test Failed: Leading-bits number does NOT match header's")
 

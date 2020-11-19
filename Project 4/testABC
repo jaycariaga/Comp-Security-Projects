@@ -1,7 +1,10 @@
 File: .\abc
+Proof-of-work: JH%?M
 Initial-hash: 1010a7e761610980ac591359c871f724de150f23440ebb5959ac4c0724c91d91
-Proof-of-work: ~}
-Hash: dfffa0d926fe0c1366748d8e258e706a870bcfa755d6ac75e4ced9cd9bbadd25
-Leading-bits: 0
-Iterations: 8372
-Compute-time: 0.016999483108520508
+Hash: 0046cfefeb8617b434833abffeabbff753987e3be40b3564cdde44a4b434d375
+Iterations: 67
+Compute-time: 0.0010001659393310547
+Leading-bits: 9
+
+
+

@@ -41,6 +41,7 @@ allchars = allchars.replace(' ', '')
 
 #computed is the first hash, setchars is the tuples, count is iterations starting at 0
 def prefixgen(setchars, computed, count, checking, limit):
+	#setchars = setchars.shuffle()
 	for i in setchars:
 		proof = ''.join(i)
 		tryme = proof + computed

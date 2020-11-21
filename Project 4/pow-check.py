@@ -57,7 +57,7 @@ with open(powheader, 'r') as pow:
 	for part in header:
 		if not part:
 			continue
-		print(part)
+		#print(part)
 		arrch = part.split()
 		check = arrch[0]
 		if "file" in check.lower():

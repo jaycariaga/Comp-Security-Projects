@@ -73,7 +73,12 @@ elif difficulty > 18:
 	newlen = 4
 elif difficulty > 17:
 	newlen = 3
-
+try:
+	f = open(message, 'r')
+except:
+	print("Invalid file! Try again")
+	exit()
+f.close()
 with open(message, "rb") as msg:
 	print ("File: {}".format(message))
 	while True:
@@ -111,4 +116,5 @@ with open(message, "rb") as msg:
 				exit();
 		print("Too many iterations! Stopping execution now.")
 		exit()
+
 

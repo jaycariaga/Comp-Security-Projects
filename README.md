@@ -3,7 +3,7 @@
 <br />
 <b>
 <ol>
-<li>Basic Access Control Mechanisms using Python with a choice of data storage. In this case, I decided to use JSON for easier parsing </li>
+<li>Basic Access Control Mechanisms using Python with a choice of data storage. In this case, I decided to use JSON for easier parsing. <br />Link for that project is here: https://github.com/jaycariaga/Comp-Security-Portal-Assignment </li>
 <li>Overriding Linux's directory printing function "readdir" thru the LD_PRELOAD mechanism using C.</li>
 <li>Implementing a byte-size version of encryption rather than string, using 3 different ciphers: Binary Vignere, Stream, and Block Encryption with cipher block chaining and padding
   <br />Quick Note that the cipher block chaining component has not yet been completed...</li>
